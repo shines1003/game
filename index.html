@@ -77,12 +77,24 @@
 
       loadingBar.style.display = "block";
 
+      // 전역 인스턴스 변수 선언
+      window.unityInstance = null;
+
       // --- Supabase 설정 시작 ---
       const supabaseUrl = 'https://ycizbxlqgqguxxkkxugm.supabase.co';
       const supabaseKey = 'sb_publishable_R-XE2JfZaSK0Zfkn_6wfHw_5kwl5kSe';
-      const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      
+      // 라이브러리 로드 체크 후 클라이언트 생성
+      let _supabase;
+      try {
+          _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      } catch (e) {
+          console.error("Supabase 로드 실패, 대문자 체크:", e);
+          _supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+      }
 
       window.RequestLogin = async function(email, password) {
+        console.log("로그인 요청 접수:", email);
         const { data, error } = await _supabase.auth.signInWithPassword({
           email: email,
           password: password,
@@ -91,8 +103,10 @@
         if (error) {
           alert("로그인 실패: " + error.message);
         } else {
-          // 유니티 인스턴스에 성공 신호 전달
-          window.unityInstance.SendMessage('AuthManager', 'OnLoginSuccess');
+          console.log("로그인 성공!");
+          if(window.unityInstance) {
+              window.unityInstance.SendMessage('AuthManager', 'OnLoginSuccess');
+          }
         }
       };
       // --- Supabase 설정 끝 ---
@@ -103,7 +117,7 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          // 전역 변수로 저장하여 외부 JS에서 접근 가능하게 함
+          // 전역 변수 할당
           window.unityInstance = unityInstance; 
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
