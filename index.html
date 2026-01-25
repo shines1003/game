@@ -50,12 +50,13 @@
         updateBannerVisibility();
       }
 
+      // --- [주의] 형님의 새 빌드 설정 반영 (압축 해제 버전) ---
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/builds.loader.js";
       var config = {
-        dataUrl: buildUrl + "/builds.data.br",
-        frameworkUrl: buildUrl + "/builds.framework.js.br",
-        codeUrl: buildUrl + "/builds.wasm.br",
+        dataUrl: buildUrl + "/builds.data",
+        frameworkUrl: buildUrl + "/builds.framework.js",
+        codeUrl: buildUrl + "/builds.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "game",
@@ -77,24 +78,18 @@
 
       loadingBar.style.display = "block";
 
-      // 전역 인스턴스 변수 선언
-      window.unityInstance = null;
-
-      // --- Supabase 설정 시작 ---
+      // --- Supabase 로직 시작 ---
       const supabaseUrl = 'https://ycizbxlqgqguxxkkxugm.supabase.co';
       const supabaseKey = 'sb_publishable_R-XE2JfZaSK0Zfkn_6wfHw_5kwl5kSe';
-      
-      // 라이브러리 로드 체크 후 클라이언트 생성
       let _supabase;
+      
       try {
-          _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        _supabase = supabase.createClient(supabaseUrl, supabaseKey);
       } catch (e) {
-          console.error("Supabase 로드 실패, 대문자 체크:", e);
-          _supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+        _supabase = Supabase.createClient(supabaseUrl, supabaseKey);
       }
 
       window.RequestLogin = async function(email, password) {
-        console.log("로그인 요청 접수:", email);
         const { data, error } = await _supabase.auth.signInWithPassword({
           email: email,
           password: password,
@@ -103,13 +98,11 @@
         if (error) {
           alert("로그인 실패: " + error.message);
         } else {
-          console.log("로그인 성공!");
-          if(window.unityInstance) {
-              window.unityInstance.SendMessage('AuthManager', 'OnLoginSuccess');
-          }
+          // 유니티 오브젝트 이름이 'AuthManager'인지 다시 확인하세요!
+          window.unityInstance.SendMessage('AuthManager', 'OnLoginSuccess');
         }
       };
-      // --- Supabase 설정 끝 ---
+      // --- Supabase 로직 끝 ---
 
       var script = document.createElement("script");
       script.src = loaderUrl;
@@ -117,7 +110,7 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          // 전역 변수 할당
+          // 브라우저에서 유니티를 조작할 수 있게 연결
           window.unityInstance = unityInstance; 
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
