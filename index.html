@@ -34,17 +34,17 @@
 
                 <script>
                     for(let i=1; i<=2; i++) {
-                        document.write(`
-                            <div class="game-card">
-                                <div class="card-preview"></div>
-                                <div class="card-info">
-                                    <h3>준비 중인 게임 ${i}</h3>
-                                    <p class="desc">Coming Soon...</p>
-                                    <button class="play-button">PLAY NOW</button>
+                            document.write(`
+                                <div class="game-card upcoming">
+                                    <div class="card-preview"></div>
+                                    <div class="card-info">
+                                        <h3>준비 중인 게임 ${i}</h3>
+                                        <p class="desc">Coming Soon...</p>
+                                        <button class="play-button" disabled>COMING SOON</button>
+                                    </div>
                                 </div>
-                            </div>
-                        `);
-                    }
+                            `);
+                        }
                 </script>
             </div>
 
