@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIXEL PLAY | 2D Retro Game World</title>
+    <title>PIXEL PLAY | A World of 2D Dot Adventures</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="bg-container">
-        <div class="stars"></div>
-        <div class="fog"></div>
-    </div>
+    <div class="background-animated-layers">
+        <div class="layer layer-back"></div>
+        <div class="layer layer-mid"></div>
+        <div class="layer layer-front"></div>
+        <div class="floating-particles"></div> </div>
 
     <main class="lobby-container">
         <header class="logo-area">
@@ -19,9 +20,10 @@
             <p class="subtitle">A World of 2D Dot Adventures</p>
         </header>
 
-        <section class="game-selection">
-            <div class="game-card active" id="game-ygj">
-                <div class="card-inner">
+        <section class="game-carousel-wrapper">
+            <button class="arrow left-arrow" aria-label="Previous Games"><span>&#10094;</span></button>
+            <div class="game-selection" id="gameSelectionScroll">
+                <div class="game-card active" id="game-ygj">
                     <div class="game-preview ygj-bg"></div>
                     <div class="game-info">
                         <h3>YGJ: 삼국지</h3>
@@ -29,10 +31,37 @@
                         <button class="btn-play" onclick="startGame('YGJ')">PLAY NOW</button>
                     </div>
                 </div>
-            </div>
-            
-            <div class="game-card locked">
-                <div class="card-inner">
+                <div class="game-card">
+                    <div class="game-preview cosmic-bg"></div>
+                    <div class="game-info">
+                        <h3>Cosmic Quest</h3>
+                        <p>SF 어드벤처</p>
+                        <button class="btn-play" onclick="startGame('CosmicQuest')">PLAY NOW</button>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="game-preview dungeon-bg"></div>
+                    <div class="game-info">
+                        <h3>Dungeon Delvers</h3>
+                        <p>로그라이크 RPG</p>
+                        <button class="btn-play" onclick="startGame('DungeonDelvers')">PLAY NOW</button>
+                    </div>
+                </div>
+                <div class="game-card upcoming">
+                    <div class="game-preview upcoming-bg"></div>
+                    <div class="game-info">
+                        <h3>UPCOMING</h3>
+                        <p>준비 중인 게임입니다</p>
+                    </div>
+                </div>
+                <div class="game-card upcoming">
+                    <div class="game-preview upcoming-bg"></div>
+                    <div class="game-info">
+                        <h3>UPCOMING</h3>
+                        <p>준비 중인 게임입니다</p>
+                    </div>
+                </div>
+                <div class="game-card upcoming">
                     <div class="game-preview upcoming-bg"></div>
                     <div class="game-info">
                         <h3>UPCOMING</h3>
@@ -40,22 +69,10 @@
                     </div>
                 </div>
             </div>
+            <button class="arrow right-arrow" aria-label="Next Games"><span>&#10095;</span></button>
         </section>
-
-        <nav class="bottom-nav">
-            <button class="menu-item">
-                <span class="icon">💾</span>
-                <span>LOAD GAME</span>
-            </button>
-            <button class="menu-item">
-                <span class="icon">⚙️</span>
-                <span>SETTINGS</span>
-            </button>
-            <button class="menu-item">
-                <span class="icon">👤</span>
-                <span>MY LIBRARY</span>
-            </button>
-        </nav>
+        
+        <button class="exit-button" onclick="alert('게임을 종료합니다. 브라우저 탭을 닫아주세요.');">X</button>
     </main>
 
     <script src="script.js"></script>

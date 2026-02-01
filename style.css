@@ -1,88 +1,320 @@
 :root {
-    --gold: #ffcc00;
-    --dark-bg: #0a0a0c;
-    --accent: #ff4500;
+    --gold: #FFD700; /* 황금색 */
+    --dark-bg: #1a1a2e; /* 어두운 배경 */
+    --accent: #E94560; /* 강조색 */
+    --text-color: #E0E0E0; /* 옅은 흰색 텍스트 */
+    --card-bg: rgba(0, 0, 0, 0.7); /* 카드 배경 반투명 */
+    --border-color: #5C2D91; /* 카드 테두리 색상 */
+    --card-active-border: #FFD700; /* 활성화 카드 테두리 */
 }
 
 body, html {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     background-color: var(--dark-bg);
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-    overflow: hidden;
+    color: var(--text-color);
+    font-family: 'Pixelify Sans', 'Press Start 2P', 'Courier New', monospace; /* 픽셀 아트 폰트 추가 */
+    overflow: hidden; /* 전체 스크롤 방지 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
-/* 배경 안개 효과 */
-.bg-container {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, #1a1a2e, #0a0a0c);
-    z-index: -1;
+/* 폰트 임포트 (Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Press+Start+2P&display=swap');
+
+/* === 배경 애니메이션 레이어 === */
+.background-animated-layers {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden; /* 배경 레이어 내부 스크롤 방지 */
+    perspective: 1000px; /* 3D 효과를 위한 원근법 */
+    background: linear-gradient(180deg, #1f074d 0%, #0d012e 100%); /* 그라데이션 시작 */
 }
 
-.fog {
-    position: absolute; width: 200%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-    opacity: 0.3;
-    animation: fogMove 60s linear infinite;
+.layer {
+    position: absolute;
+    width: 120%; /* 화면보다 크게 만들어서 움직일 공간 확보 */
+    height: 120%;
+    background-repeat: repeat-x; /* 가로로 반복 */
+    animation: parallaxMove 60s linear infinite alternate; /* 패럴랙스 애니메이션 */
 }
 
-@keyframes fogMove {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+.layer-back {
+    background-image: url('https://i.imgur.com/L4B9o5F.png'); /* 멀리 있는 별, 구름 이미지 예시 */
+    background-size: 200% auto; /* 반복될 이미지 크기 */
+    opacity: 0.4;
+    animation-duration: 90s;
+    transform: translateZ(-50px) scale(1.1); /* z축 이동과 스케일로 깊이감 */
 }
 
-/* 로고 애니메이션 */
+.layer-mid {
+    background-image: url('https://i.imgur.com/gK1qJdE.png'); /* 중간 산맥, 건물 이미지 예시 */
+    background-size: 150% auto;
+    opacity: 0.6;
+    animation-duration: 70s;
+    transform: translateZ(-30px) scale(1.05);
+}
+
+.layer-front {
+    background-image: url('https://i.imgur.com/K5bT6Zc.png'); /* 가까운 강물, 잔해 이미지 예시 */
+    background-size: 100% auto;
+    opacity: 0.8;
+    animation-duration: 50s;
+    transform: translateZ(-10px) scale(1.02);
+}
+
+@keyframes parallaxMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-10%); } /* 조금씩 옆으로 움직임 */
+}
+
+/* 미세 입자 효과 */
+.floating-particles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 1; /* 다른 배경 위에, UI 아래 */
+    opacity: 0.7;
+    animation: fadeInOut 10s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+
+/* 자바스크립트로 생성될 파티클 스타일 (script.js에서 동적으로 추가) */
+.particle {
+    position: absolute;
+    background-color: var(--gold);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleAnimation linear infinite;
+    box-shadow: 0 0 5px var(--gold);
+}
+
+/* === 로비 UI 기본 스타일 === */
+.lobby-container {
+    position: relative;
+    z-index: 10; /* 배경 위에 오도록 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%; height: 100%;
+    gap: 40px;
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .main-logo {
-    font-size: 80px; font-weight: bold; color: var(--gold);
-    text-shadow: 0 0 20px var(--gold);
-    animation: glow 2s ease-in-out infinite alternate;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7vw; /* 반응형 폰트 크기 */
+    font-weight: bold;
+    color: var(--gold);
+    text-shadow: 0 0 15px var(--gold), 0 0 30px var(--accent);
+    animation: logoGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes glow {
+@keyframes logoGlow {
     from { text-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold); }
     to { text-shadow: 0 0 20px var(--gold), 0 0 40px var(--accent); }
 }
 
-/* 게임 카드 디자인 */
+h1 {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 3.5vw;
+    margin: 10px 0 5px;
+    color: var(--text-color);
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.2vw;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* === 게임 카드 슬라이더 === */
+.game-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 80%; /* 전체 너비 조절 */
+    max-width: 1200px;
+}
+
 .game-selection {
-    display: flex; justify-content: center; gap: 30px; margin-top: 50px;
+    display: flex;
+    overflow-x: auto; /* 가로 스크롤 허용 */
+    scroll-snap-type: x mandatory; /* 스크롤 정지 지점 */
+    -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+    gap: 30px;
+    padding: 20px 0; /* 상하 여백 */
+    scrollbar-width: none; /* 파이어폭스 스크롤바 숨김 */
+    -ms-overflow-style: none; /* IE 스크롤바 숨김 */
+}
+.game-selection::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리 스크롤바 숨김 */
 }
 
 .game-card {
-    width: 300px; height: 400px;
-    border: 3px solid var(--gold);
-    background: rgba(0, 0, 0, 0.8);
-    transition: transform 0.3s, box-shadow 0.3s;
+    flex: 0 0 auto; /* 카드 크기 고정, 줄바꿈 안 함 */
+    width: 250px;
+    height: 350px;
+    background: var(--card-bg);
+    border: 3px solid var(--border-color);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     cursor: pointer;
-    position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: center; /* 스크롤 시 중앙 정렬 */
 }
 
 .game-card:hover {
-    transform: scale(1.05) translateY(-10px);
-    box-shadow: 0 0 30px var(--gold);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 25px var(--accent);
+}
+
+.game-card.active {
+    border-color: var(--card-active-border);
+    box-shadow: 0 0 30px var(--card-active-border), 0 0 10px var(--card-active-border) inset;
+    transform: scale(1.05);
+}
+
+.game-preview {
+    width: 100%;
+    height: 60%; /* 미리보기 이미지 영역 */
+    background-size: cover;
+    background-position: center;
+    image-rendering: pixelated; /* 픽셀 아트 선명하게 */
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* 개별 게임 배경 이미지 (예시) */
+.ygj-bg { background-image: url('https://i.imgur.com/u10B8X9.png'); } /* YGJ 배경 이미지 */
+.cosmic-bg { background-image: url('https://i.imgur.com/eB3Zt5Z.png'); } /* Cosmic Quest 배경 이미지 */
+.dungeon-bg { background-image: url('https://i.imgur.com/f7jYy42.png'); } /* Dungeon Delvers 배경 이미지 */
+.upcoming-bg { background-image: url('https://i.imgur.com/X2hSg5u.png'); /* Upcoming 배경 이미지 */
+}
+
+.game-info {
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.game-info h3 {
+    font-size: 1.4vw;
+    margin: 0 0 8px;
+    color: var(--gold);
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-info p {
+    font-size: 0.9vw;
+    margin: 0;
+    color: var(--text-color);
+    opacity: 0.9;
 }
 
 .btn-play {
-    background: var(--gold);
-    border: none; padding: 10px 20px; font-weight: bold;
-    cursor: pointer; margin-top: 15px;
-    transition: 0.2s;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1vw;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: 0 4px 0px rgba(0,0,0,0.5); /* 3D 버튼 효과 */
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
-.btn-play:hover { background: white; color: black; }
-
-/* 하단 내비게이션 */
-.bottom-nav {
-    position: absolute; bottom: 30px; width: 100%;
-    display: flex; justify-content: center; gap: 50px;
+.btn-play:hover {
+    background-color: darken(var(--accent), 10%); /* 호버 시 색상 어둡게 */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px rgba(0,0,0,0.5);
 }
 
-.menu-item {
-    background: none; border: none; color: var(--gold);
-    display: flex; flex-direction: column; align-items: center;
-    cursor: pointer; opacity: 0.8; transition: 0.3s;
+.btn-play:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0px rgba(0,0,0,0.5);
 }
 
-.menu-item:hover { opacity: 1; transform: scale(1.1); }
+/* === 슬라이더 화살표 === */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-size: 3vw;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10; /* 카드 위로 */
+    opacity: 0.8;
+    transition: opacity 0.3s, transform 0.3s;
+    border-radius: 5px;
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.arrow:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px var(--gold);
+}
+
+.left-arrow { left: 5%; }
+.right-arrow { right: 5%; }
+
+/* === 종료 버튼 === */
+.exit-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--text-color);
+    border: 2px solid var(--gold);
+    font-size: 1.5vw;
+    width: 40px; height: 40px;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    z-index: 100;
+}
+.exit-button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* === 반응형 디자인 (선택 사항) === */
+@media (max-width: 768px) {
+    .main-logo { font-size: 15vw; }
+    h1 { font-size: 7vw; }
+    .subtitle { font-size: 3vw; }
+    .game-card { width: 200px; height: 300px; }
+    .game-info h3 { font-size: 1.8vw; }
+    .game-info p { font-size: 1.2vw; }
+    .btn-play { font-size: 1.5vw; padding: 8px 15px; }
+    .arrow { font-size: 5vw; padding: 5px 10px; }
+    .left-arrow { left: 2%; }
+    .right-arrow { right: 2%; }
+    .exit-button { width: 30px; height: 30px; font-size: 1.2vw; }
+}
