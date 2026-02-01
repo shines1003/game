@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIXEL PLAY | A World of 2D Dot Adventures</title>
+    <title>PIXEL PLAY | 2D Game World</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-animated-layers">
-        <div class="layer layer-back"></div>
-        <div class="layer layer-mid"></div>
-        <div class="layer layer-front"></div>
-        <div class="floating-particles"></div> </div>
+    <div class="sky-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="river">
+            <div class="wave"></div>
+        </div>
+    </div>
 
     <main class="lobby-container">
         <header class="logo-area">
@@ -20,59 +24,56 @@
             <p class="subtitle">A World of 2D Dot Adventures</p>
         </header>
 
-        <section class="game-carousel-wrapper">
-            <button class="arrow left-arrow" aria-label="Previous Games"><span>&#10094;</span></button>
-            <div class="game-selection" id="gameSelectionScroll">
-                <div class="game-card active" id="game-ygj">
-                    <div class="game-preview ygj-bg"></div>
-                    <div class="game-info">
+        <div class="carousel-wrapper">
+            <button class="nav-btn left" id="prevBtn">&#10094;</button>
+            
+            <div class="game-selection" id="gameScroll">
+                <div class="game-card active">
+                    <div class="card-preview ygj-thumb"></div>
+                    <div class="card-info">
                         <h3>YGJ: 삼국지</h3>
                         <p>전략 시뮬레이션 RPG</p>
-                        <button class="btn-play" onclick="startGame('YGJ')">PLAY NOW</button>
+                        <button class="play-button" onclick="startGame('YGJ')">PLAY NOW</button>
                     </div>
                 </div>
+
                 <div class="game-card">
-                    <div class="game-preview cosmic-bg"></div>
-                    <div class="game-info">
+                    <div class="card-preview cosmic-thumb"></div>
+                    <div class="card-info">
                         <h3>Cosmic Quest</h3>
                         <p>SF 어드벤처</p>
-                        <button class="btn-play" onclick="startGame('CosmicQuest')">PLAY NOW</button>
+                        <button class="play-button">PLAY NOW</button>
                     </div>
                 </div>
+
                 <div class="game-card">
-                    <div class="game-preview dungeon-bg"></div>
-                    <div class="game-info">
-                        <h3>Dungeon Delvers</h3>
-                        <p>로그라이크 RPG</p>
-                        <button class="btn-play" onclick="startGame('DungeonDelvers')">PLAY NOW</button>
+                    <div class="card-preview dungeon-thumb"></div>
+                    <div class="card-info">
+                        <h3>Dungeon Delver</h3>
+                        <p>로그라이크</p>
+                        <button class="play-button">PLAY NOW</button>
                     </div>
                 </div>
-                <div class="game-card upcoming">
-                    <div class="game-preview upcoming-bg"></div>
-                    <div class="game-info">
-                        <h3>UPCOMING</h3>
-                        <p>준비 중인 게임입니다</p>
-                    </div>
-                </div>
-                <div class="game-card upcoming">
-                    <div class="game-preview upcoming-bg"></div>
-                    <div class="game-info">
-                        <h3>UPCOMING</h3>
-                        <p>준비 중인 게임입니다</p>
-                    </div>
-                </div>
-                <div class="game-card upcoming">
-                    <div class="game-preview upcoming-bg"></div>
-                    <div class="game-info">
-                        <h3>UPCOMING</h3>
-                        <p>준비 중인 게임입니다</p>
-                    </div>
-                </div>
+
+                <script>
+                    for(let i=1; i<=7; i++) {
+                        document.write(`
+                            <div class="game-card upcoming">
+                                <div class="card-preview"></div>
+                                <div class="card-info">
+                                    <h3>UPCOMING ${i}</h3>
+                                    <p>Coming Soon...</p>
+                                </div>
+                            </div>
+                        `);
+                    }
+                </script>
             </div>
-            <button class="arrow right-arrow" aria-label="Next Games"><span>&#10095;</span></button>
-        </section>
-        
-        <button class="exit-button" onclick="alert('게임을 종료합니다. 브라우저 탭을 닫아주세요.');">X</button>
+
+            <button class="nav-btn right" id="nextBtn">&#10095;</button>
+        </div>
+
+        <button class="exit-btn" onclick="window.close()">X</button>
     </main>
 
     <script src="script.js"></script>
