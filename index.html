@@ -10,17 +10,13 @@
     <div class="animated-bg">
         <div class="stars"></div>
         <div class="nebula"></div>
-        <div class="clouds-container">
-            <div class="pixel-cloud c1"></div>
-            <div class="pixel-cloud c2"></div>
-        </div>
     </div>
 
     <main class="lobby-container">
         <header class="logo-area">
-            <div class="main-logo">S</div>
-            <h1>PIXEL PLAY</h1>
-            <p class="subtitle">물마루 서체로 구성된 2D 도트 어드벤처</p>
+            <div class="main-logo">PIXCEL PLAY</div>
+            <h1>Welcome</h1>
+            <p class="subtitle">2D 도트 어드벤처</p>
         </header>
 
         <div class="carousel-wrapper">
@@ -31,43 +27,25 @@
                     <div class="card-preview ygj-theme"></div>
                     <div class="card-info">
                         <h3>YGJ: 삼국지</h3>
-                        <p>전략 시뮬레이션 RPG</p>
+                        <p class="desc">전략 시뮬레이션 RPG</p>
                         <button class="play-button" onclick="startGame('YGJ')">PLAY NOW</button>
                     </div>
                 </div>
 
-                <div class="game-card">
-                    <div class="card-preview cosmic-theme"></div>
-                    <div class="card-info">
-                        <h3>Cosmic Quest</h3>
-                        <p>SF 어드벤처</p>
-                        <button class="play-button" onclick="startGame('Cosmic')">PLAY NOW</button>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="card-preview dungeon-theme"></div>
-                    <div class="card-info">
-                        <h3>Dungeon Delver</h3>
-                        <p>로그라이크</p>
-                        <button class="play-button" onclick="startGame('Dungeon')">PLAY NOW</button>
-                    </div>
-                </div>
-
-                <script>
-                    for(let i=1; i<=7; i++) {
+                <!--<script>
+                    for(let i=1; i<=9; i++) {
                         document.write(`
-                            <div class="game-card upcoming">
+                            <div class="game-card">
                                 <div class="card-preview"></div>
                                 <div class="card-info">
                                     <h3>준비 중인 게임 ${i}</h3>
-                                    <p>Coming Soon...</p>
-                                    <button class="play-button disabled">잠김</button>
+                                    <p class="desc">Coming Soon...</p>
+                                    <button class="play-button">PLAY NOW</button>
                                 </div>
                             </div>
                         `);
                     }
-                </script>
+                </script>-->
             </div>
 
             <button class="nav-btn right" id="nextBtn">&#10095;</button>
