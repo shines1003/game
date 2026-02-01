@@ -1,4 +1,4 @@
-/* 폰트 설정: 물마루 서체 연결 */
+/* 1. 폰트 파일 연결 (파일이 fonts 폴더 안에 있어야 함) */
 @font-face {
     font-family: 'Mulmaru';
     src: url('./fonts/Mulmaru.woff2') format('woff2'),
@@ -10,67 +10,63 @@
 
 :root {
     --gold: #FFCC00;
-    --gold-glow: rgba(255, 204, 0, 0.4);
     --bg-dark: #0A0A0F;
-    --font-main: 'Mulmaru', 'Malgun Gothic', sans-serif; /* 물마루 적용 */
+}
+
+/* 2. 모든 텍스트 요소를 물마루로 강제 통일 */
+* {
+    font-family: 'Mulmaru', 'Malgun Gothic', sans-serif !important;
+    box-sizing: border-box;
 }
 
 body, html {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     background-color: var(--bg-dark);
-    font-family: var(--font-main);
     color: white; overflow: hidden;
 }
 
-/* --- 배경 애니메이션 --- */
+/* --- 배경 효과 --- */
 .animated-bg {
     position: fixed; width: 100%; height: 100%;
     z-index: -1; background: radial-gradient(circle at center, #1B2735 0%, #090A0F 100%);
 }
-
 .stars {
     position: absolute; width: 100%; height: 100%;
     background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
     animation: starsMove 150s linear infinite; opacity: 0.3;
 }
+@keyframes starsMove { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
-@keyframes starsMove {
-    from { background-position: 0 0; }
-    to { background-position: 1000px 1000px; }
-}
-
-/* --- 로비 UI --- */
+/* --- 레이아웃 --- */
 .lobby-container {
     height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
 }
 
 .main-logo {
-    font-size: clamp(50px, 10vw, 100px); color: var(--gold);
-    text-shadow: 0 0 20px var(--gold-glow), 4px 4px 0px #000;
-    margin-bottom: 10px; font-weight: bold;
+    font-size: 80px; color: var(--gold);
+    text-shadow: 0 0 20px rgba(255,204,0,0.4), 4px 4px 0px #000;
 }
 
-h1 { font-size: clamp(20px, 4vw, 32px); margin: 0; letter-spacing: 2px; }
-.subtitle { font-size: clamp(10px, 1.5vw, 14px); opacity: 0.7; margin: 15px 0 50px; }
+h1 { font-size: 28px; margin: 10px 0; }
+.subtitle { font-size: 14px; opacity: 0.7; margin-bottom: 40px; }
 
-/* --- 슬라이더 영역 --- */
+/* --- 슬라이더 --- */
 .carousel-wrapper {
     display: flex; align-items: center; justify-content: center;
-    width: 95%; max-width: 1400px; position: relative;
+    width: 95%; position: relative;
 }
 
 .game-selection {
     display: flex; overflow-x: auto; scroll-behavior: smooth;
-    gap: 30px; padding: 20px 10px; width: 85%;
+    gap: 30px; padding: 20px; width: 85%;
     scrollbar-width: none;
 }
 .game-selection::-webkit-scrollbar { display: none; }
 
-/* --- 게임 카드 --- */
 .game-card {
-    min-width: 280px; height: 440px;
+    min-width: 280px; height: 420px;
     background: rgba(0, 0, 0, 0.85);
     border: 3px solid #333; transition: 0.3s;
     display: flex; flex-direction: column; flex-shrink: 0;
@@ -79,33 +75,25 @@ h1 { font-size: clamp(20px, 4vw, 32px); margin: 0; letter-spacing: 2px; }
 .game-card.active, .game-card:hover {
     border-color: var(--gold);
     transform: translateY(-10px);
-    box-shadow: 0 0 30px var(--gold-glow);
 }
 
-.card-preview {
-    width: 100%; height: 55%; background: #1a1a1a;
-    border-bottom: 2px solid #333;
-}
+.card-preview { width: 100%; height: 50%; background: #222; border-bottom: 2px solid #333; }
 .ygj-theme { background: linear-gradient(135deg, #4b0082, #000); }
-.cosmic-theme { background: linear-gradient(135deg, #001f3f, #000); }
-.dungeon-theme { background: linear-gradient(135deg, #8b0000, #000); }
 
 .card-info { padding: 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-.card-info h3 { font-size: 18px; color: var(--gold); margin: 0; }
-.card-info p { font-size: 13px; line-height: 1.6; opacity: 0.9; margin: 10px 0; }
+
+/* 카드 내부 텍스트 스타일 */
+.card-info h3 { font-size: 20px; color: var(--gold); margin: 0; }
+.card-info p.desc { font-size: 15px; line-height: 1.6; opacity: 0.9; margin: 10px 0; }
 
 .play-button {
     background: var(--gold); border: none; padding: 12px;
-    font-family: var(--font-main); font-size: 14px; font-weight: bold;
-    cursor: pointer; transition: 0.2s;
+    font-size: 16px; font-weight: bold; cursor: pointer;
 }
-.play-button:hover { background: white; color: black; }
-.play-button.disabled { background: #444; color: #888; cursor: not-allowed; }
 
-/* --- 화살표 버튼 --- */
+/* --- 화살표 --- */
 .nav-btn {
-    background: rgba(0, 0, 0, 0.6); border: 2px solid var(--gold);
+    background: none; border: 2px solid var(--gold);
     color: var(--gold); font-size: 30px; width: 60px; height: 60px;
-    cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
-.nav-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 15px var(--gold); }
