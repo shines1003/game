@@ -1,8 +1,7 @@
 :root {
     --gold: #FFCC00;
-    --gold-glow: rgba(255, 204, 0, 0.6);
-    --bg-dark: #0F0C29;
     --accent: #E94560;
+    --bg-dark: #0F0C29;
 }
 
 body, html {
@@ -10,130 +9,113 @@ body, html {
     width: 100%; height: 100%;
     background-color: var(--bg-dark);
     font-family: 'Press Start 2P', cursive;
-    color: white;
-    overflow: hidden;
+    color: white; overflow: hidden;
 }
 
-/* --- 배경 애니메이션 --- */
-.sky-container {
+/* --- 이미지 깨짐 없는 CSS 애니메이션 배경 --- */
+.animated-bg {
     position: fixed; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, #1e3c72, #2a5298);
+    background: radial-gradient(circle at center, #1B2735 0%, #090A0F 100%);
     z-index: -1;
 }
 
-.cloud {
-    position: absolute; background: rgba(255, 255, 255, 0.15);
-    border-radius: 50px; filter: blur(15px);
-    animation: moveCloud linear infinite;
-}
-.cloud-1 { width: 300px; height: 100px; top: 10%; animation-duration: 35s; left: -350px; }
-.cloud-2 { width: 200px; height: 80px; top: 25%; animation-duration: 25s; left: -250px; animation-delay: 5s; }
-.cloud-3 { width: 400px; height: 120px; top: 15%; animation-duration: 45s; left: -450px; animation-delay: 10s; }
-
-@keyframes moveCloud {
-    to { left: 110%; }
+/* 반짝이는 별 효과 */
+.stars {
+    position: absolute; width: 100%; height: 100%;
+    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+    animation: stars-move 100s linear infinite;
+    opacity: 0.5;
 }
 
-.river {
-    position: absolute; bottom: 0; width: 100%; height: 35%;
-    background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%);
-    opacity: 0.4;
-    clip-path: polygon(0 40%, 100% 10%, 100% 100%, 0% 100%);
+@keyframes stars-move {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
 }
 
-.wave {
-    width: 200%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-    animation: riverFlow 10s linear infinite;
+/* 흐르는 네뷸라 효과 */
+.nebula {
+    position: absolute; width: 100%; height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(233, 69, 96, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(92, 45, 145, 0.2), transparent 40%);
+    filter: blur(50px);
+    animation: nebula-pulse 10s ease-in-out infinite alternate;
 }
 
-@keyframes riverFlow {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+@keyframes nebula-pulse {
+    from { opacity: 0.5; transform: scale(1); }
+    to { opacity: 0.8; transform: scale(1.1); }
 }
 
-/* --- 메인 레이아웃 --- */
+/* --- 레이아웃 및 카드 스타일 --- */
 .lobby-container {
     height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    position: relative; z-index: 10;
 }
 
 .main-logo {
     font-size: 80px; color: var(--gold);
-    text-shadow: 0 0 20px var(--gold-glow), 5px 5px 0px #000;
-    animation: float 3s ease-in-out infinite alternate;
+    text-shadow: 0 0 20px var(--gold), 5px 5px 0px #000;
+    animation: logo-float 3s ease-in-out infinite alternate;
 }
 
-@keyframes float {
-    from { transform: translateY(0); }
+@keyframes logo-float {
     to { transform: translateY(-10px); }
 }
 
-h1 { font-size: 24px; margin: 10px 0; letter-spacing: 2px; }
-.subtitle { font-size: 10px; opacity: 0.7; margin-bottom: 40px; }
-
-/* --- 슬라이더 섹션 --- */
 .carousel-wrapper {
     display: flex; align-items: center; justify-content: center;
-    width: 95%; position: relative;
+    width: 95%; position: relative; margin-top: 50px;
 }
 
 .game-selection {
     display: flex; overflow-x: auto; scroll-behavior: smooth;
-    gap: 30px; padding: 20px;
-    width: 80%; scrollbar-width: none;
+    gap: 30px; padding: 20px; width: 80%;
+    scrollbar-width: none;
 }
 .game-selection::-webkit-scrollbar { display: none; }
 
 .game-card {
-    min-width: 260px; height: 360px;
+    min-width: 280px; height: 400px;
     background: rgba(0, 0, 0, 0.8);
-    border: 4px solid #333;
-    transition: 0.3s; flex-shrink: 0;
+    border: 4px solid #333; transition: 0.3s;
     display: flex; flex-direction: column;
 }
 
 .game-card.active, .game-card:hover {
     border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.4);
     transform: translateY(-10px);
-    box-shadow: 0 0 25px var(--gold-glow);
 }
 
 .card-preview {
-    width: 100%; height: 55%; background: #222;
-    border-bottom: 2px solid #333;
+    width: 100%; height: 50%;
+    background: #222; border-bottom: 2px solid #333;
 }
-.ygj-thumb { background: linear-gradient(45deg, #4b0082, #000); } /* 임시 색상 */
+.ygj { background: linear-gradient(45deg, #4b0082, #000); }
+.cosmic { background: linear-gradient(45deg, #001f3f, #000); }
+.dungeon { background: linear-gradient(45deg, #8b0000, #000); }
 
-.card-info {
-    padding: 15px; text-align: center; flex-grow: 1;
-    display: flex; flex-direction: column; justify-content: space-between;
-}
-
-.card-info h3 { font-size: 14px; margin: 0; color: var(--gold); }
-.card-info p { font-size: 8px; margin: 5px 0; line-height: 1.5; }
+.card-info { padding: 20px; text-align: center; }
+.card-info h3 { font-size: 14px; color: var(--gold); margin-bottom: 10px; }
+.card-info p { font-size: 8px; line-height: 1.6; opacity: 0.8; }
 
 .play-button {
-    background: var(--gold); border: none; padding: 10px;
+    background: var(--gold); border: none; padding: 10px 20px;
     font-family: 'Press Start 2P', cursive; font-size: 10px;
-    cursor: pointer; transition: 0.2s;
+    margin-top: 20px; cursor: pointer; transition: 0.2s;
 }
-.play-button:hover { background: white; transform: scale(1.05); }
+.play-button:hover { background: white; }
 
-/* --- 화살표 버튼 --- */
+/* --- 화살표 스타일 --- */
 .nav-btn {
-    background: none; border: 4px solid var(--gold);
-    color: var(--gold); font-size: 30px;
-    width: 60px; height: 60px; cursor: pointer;
-    transition: 0.3s; display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.5); border: 3px solid var(--gold);
+    color: var(--gold); font-size: 30px; width: 60px; height: 60px;
+    cursor: pointer; z-index: 100; transition: 0.3s;
 }
 .nav-btn:hover { background: var(--gold); color: black; }
-.nav-btn:active { transform: scale(0.9); }
 
-/* --- 기타 --- */
 .exit-btn {
     position: absolute; top: 20px; right: 20px;
     background: none; border: 2px solid white; color: white;
-    cursor: pointer; padding: 10px;
+    padding: 10px; cursor: pointer;
 }

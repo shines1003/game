@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIXEL PLAY | 2D Game World</title>
+    <title>PIXEL PLAY | 2D World</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="sky-container">
-        <div class="cloud cloud-1"></div>
-        <div class="cloud cloud-2"></div>
-        <div class="cloud cloud-3"></div>
-        <div class="river">
-            <div class="wave"></div>
-        </div>
+    <div class="animated-bg">
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <div class="grid-line"></div>
     </div>
 
     <main class="lobby-container">
@@ -29,16 +26,16 @@
             
             <div class="game-selection" id="gameScroll">
                 <div class="game-card active">
-                    <div class="card-preview ygj-thumb"></div>
+                    <div class="card-preview ygj"></div>
                     <div class="card-info">
                         <h3>YGJ: 삼국지</h3>
                         <p>전략 시뮬레이션 RPG</p>
-                        <button class="play-button" onclick="startGame('YGJ')">PLAY NOW</button>
+                        <button class="play-button">PLAY NOW</button>
                     </div>
                 </div>
 
                 <div class="game-card">
-                    <div class="card-preview cosmic-thumb"></div>
+                    <div class="card-preview cosmic"></div>
                     <div class="card-info">
                         <h3>Cosmic Quest</h3>
                         <p>SF 어드벤처</p>
@@ -47,7 +44,7 @@
                 </div>
 
                 <div class="game-card">
-                    <div class="card-preview dungeon-thumb"></div>
+                    <div class="card-preview dungeon"></div>
                     <div class="card-info">
                         <h3>Dungeon Delver</h3>
                         <p>로그라이크</p>
