@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIXEL PLAY | 2D Game World</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="animated-bg">
@@ -21,13 +20,11 @@
         <header class="logo-area">
             <div class="main-logo">S</div>
             <h1>PIXEL PLAY</h1>
-            <p class="subtitle">A World of 2D Dot Adventures</p>
+            <p class="subtitle">물마루 서체로 구성된 2D 도트 어드벤처</p>
         </header>
 
         <div class="carousel-wrapper">
-            <button class="nav-btn left" id="prevBtn">
-                <span class="arrow-icon">&#10094;</span>
-            </button>
+            <button class="nav-btn left" id="prevBtn">&#10094;</button>
             
             <div class="game-selection" id="gameScroll">
                 <div class="game-card active">
@@ -63,9 +60,9 @@
                             <div class="game-card upcoming">
                                 <div class="card-preview"></div>
                                 <div class="card-info">
-                                    <h3>UPCOMING ${i}</h3>
+                                    <h3>준비 중인 게임 ${i}</h3>
                                     <p>Coming Soon...</p>
-                                    <button class="play-button disabled">LOCKED</button>
+                                    <button class="play-button disabled">잠김</button>
                                 </div>
                             </div>
                         `);
@@ -73,9 +70,7 @@
                 </script>
             </div>
 
-            <button class="nav-btn right" id="nextBtn">
-                <span class="arrow-icon">&#10095;</span>
-            </button>
+            <button class="nav-btn right" id="nextBtn">&#10095;</button>
         </div>
     </main>
 
