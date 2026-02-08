@@ -98,17 +98,24 @@ h1 { font-size: 28px; margin: 10px 0; }
     cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 
-/* 비활성화된 버튼 스타일 */
+/* --- 비활성화된 버튼 (Grey 톤) --- */
 .play-button:disabled {
-    background: #444 !important; /* 어두운 회색 */
-    color: #888 !important;      /* 흐린 글자색 */
-    cursor: not-allowed;         /* 마우스 커서를 금지 모양으로 */
-    border: 1px solid #555;      /* 테두리 약하게 */
-    box-shadow: none;            /* 그림자 제거 */
+    background: #333333 !important; /* 쨍한 노란색 대신 어두운 회색 */
+    color: #777777 !important;      /* 글자색도 흐리게 */
+    border: 1px solid #444444 !important;
+    cursor: not-allowed;            /* 마우스 커서 금지 모양 */
+    box-shadow: none !important;    /* 광택 효과 제거 */
+    transform: none !important;     /* 클릭 시 움직임 제거 */
 }
 
-/* 준비 중인 카드는 호버 효과를 약하게 하거나 제거하고 싶을 때 */
+/* 준비 중인 카드는 마우스를 올려도 황금색으로 변하지 않게 설정 */
 .game-card.upcoming:hover {
-    border-color: #555;          /* 황금색 대신 회색 테두리 */
-    transform: none;             /* 위로 올라가는 효과 제거 */
+    border-color: #444 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* 준비 중인 카드 내부의 제목 색상도 약간 죽여서 차이를 둡니다 */
+.game-card.upcoming h3 {
+    color: #888 !important;
 }
