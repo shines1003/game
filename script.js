@@ -6,21 +6,22 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // 2. 통합된 게임 시작 함수
 async function startGame(gameId) {
     try {
-        // 현재 세션 확인
+        // 1. 현재 로그인 상태 확인
         const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
         if (sessionError) throw sessionError;
 
         if (!session) {
-            // 로그인 안 되어 있으면 구글 로그인 (redirectTo 주소 고정)
+            // 2. 로그인 안 되어 있으면 구글 로그인 실행
+            // redirectTo 뒤에 현재 클릭한 gameId를 붙여서 보냅니다.
             const { error: authError } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: 'https://shines1003.github.io/game/'
+                    redirectTo: `https://shines1003.github.io/game/?game_id=${gameId}`
                 }
             });
             if (authError) throw authError;
         } else {
-            // 로그인 상태라면 토큰 들고 형님이 만든 ygj.html로 직행
+            // 3. 이미 로그인 상태라면 즉시 해당 게임의 ygj.html로 이동
             const accessToken = session.access_token;
             window.location.href = `https://shines1003.github.io/game/games/${gameId}/ygj.html?token=${accessToken}`;
         }
