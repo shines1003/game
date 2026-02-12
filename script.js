@@ -16,7 +16,7 @@ async function startGame(gameId) {
             const { error: authError } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin 
+                    redirectTo: 'https://shines1003.github.io/game/'
                 }
             });
             if (authError) throw authError;
