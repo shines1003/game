@@ -1,4 +1,4 @@
-/* 1. 폰트 파일 연결 (파일이 fonts 폴더 안에 있어야 함) */
+/* 1. 폰트 파일 연결 */
 @font-face {
     font-family: 'Mulmaru';
     src: url('./fonts/Mulmaru.woff2') format('woff2'),
@@ -23,7 +23,7 @@ body, html {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     background-color: var(--bg-dark);
-    color: white; overflow: hidden;
+    color: white; overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
 /* --- 배경 효과 --- */
@@ -40,17 +40,20 @@ body, html {
 
 /* --- 레이아웃 --- */
 .lobby-container {
-    height: 100vh; display: flex; flex-direction: column;
+    min-height: 100vh; /* height 대신 min-height로 유연하게 */
+    display: flex; flex-direction: column;
     align-items: center; justify-content: center;
+    padding: 20px 0;
 }
 
 .main-logo {
     font-size: 80px; color: var(--gold);
     text-shadow: 0 0 20px rgba(255,204,0,0.4), 4px 4px 0px #000;
+    text-align: center;
 }
 
-h1 { font-size: 28px; margin: 10px 0; }
-.subtitle { font-size: 14px; opacity: 0.7; margin-bottom: 40px; }
+h1 { font-size: 28px; margin: 10px 0; text-align: center; }
+.subtitle { font-size: 14px; opacity: 0.7; margin-bottom: 40px; text-align: center; }
 
 /* --- 슬라이더 --- */
 .carousel-wrapper {
@@ -62,8 +65,9 @@ h1 { font-size: 28px; margin: 10px 0; }
     display: flex; overflow-x: auto; scroll-behavior: smooth;
     gap: 30px; padding: 20px; width: 85%;
     scrollbar-width: none;
+    -ms-overflow-style: none; /* IE, Edge */
 }
-.game-selection::-webkit-scrollbar { display: none; }
+.game-selection::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
 
 .game-card {
     min-width: 280px; height: 420px;
@@ -82,40 +86,69 @@ h1 { font-size: 28px; margin: 10px 0; }
 
 .card-info { padding: 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
 
-/* 카드 내부 텍스트 스타일 */
 .card-info h3 { font-size: 20px; color: var(--gold); margin: 0; }
 .card-info p.desc { font-size: 15px; line-height: 1.6; opacity: 0.9; margin: 10px 0; }
 
 .play-button {
     background: var(--gold); border: none; padding: 12px;
     font-size: 16px; font-weight: bold; cursor: pointer;
+    transition: 0.2s;
 }
+
+.play-button:active { transform: scale(0.95); }
 
 /* --- 화살표 --- */
 .nav-btn {
     background: none; border: 2px solid var(--gold);
     color: var(--gold); font-size: 30px; width: 60px; height: 60px;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
+    z-index: 10;
 }
 
-/* --- 비활성화된 버튼 (Grey 톤) --- */
+/* --- 비활성화된 버튼 --- */
 .play-button:disabled {
-    background: #333333 !important; /* 쨍한 노란색 대신 어두운 회색 */
-    color: #777777 !important;      /* 글자색도 흐리게 */
+    background: #333333 !important;
+    color: #777777 !important;
     border: 1px solid #444444 !important;
-    cursor: not-allowed;            /* 마우스 커서 금지 모양 */
-    box-shadow: none !important;    /* 광택 효과 제거 */
-    transform: none !important;     /* 클릭 시 움직임 제거 */
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
-/* 준비 중인 카드는 마우스를 올려도 황금색으로 변하지 않게 설정 */
 .game-card.upcoming:hover {
     border-color: #444 !important;
     transform: none !important;
-    box-shadow: none !important;
 }
 
-/* 준비 중인 카드 내부의 제목 색상도 약간 죽여서 차이를 둡니다 */
-.game-card.upcoming h3 {
-    color: #888 !important;
+.game-card.upcoming h3 { color: #888 !important; }
+
+/* ============================================================
+   모바일 최적화 레이아웃 (768px 이하 스마트폰용)
+   ============================================================ */
+@media screen and (max-width: 768px) {
+    body, html { overflow-y: auto; } /* 세로 스크롤 허용 */
+
+    .main-logo { font-size: 40px; } /* 로고 축소 */
+    h1 { font-size: 22px; }
+    .subtitle { margin-bottom: 20px; }
+
+    .carousel-wrapper { width: 100%; }
+    
+    .nav-btn { display: none; } /* 화살표 숨김 (터치 스와이프 권장) */
+
+    .game-selection { 
+        width: 100%; 
+        gap: 15px; 
+        padding: 10px 20px;
+    }
+
+    .game-card {
+        min-width: 260px; /* 카드 너비 살짝 축소 */
+        height: 360px;    /* 카드 높이 축소 */
+    }
+
+    .card-info { padding: 15px; }
+    .card-info h3 { font-size: 18px; }
+    .card-info p.desc { font-size: 13px; margin: 5px 0; }
+    .play-button { padding: 10px; font-size: 14px; }
 }
