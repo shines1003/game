@@ -31,13 +31,6 @@ async function startGame(gameId) {
     }
 }
 
-supabaseClient.auth.onAuthStateChange((event, session) => {
-    // 세션이 확인되면 바로 YGJ 게임을 시작하도록 실행
-    if (session) {
-        startGame('YGJ'); 
-    }
-});
-
 // 3. 슬라이드 컨트롤 (정상)
 const scrollContainer = document.getElementById('gameScroll');
 const nextBtn = document.getElementById('nextBtn');
