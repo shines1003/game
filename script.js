@@ -24,7 +24,7 @@ async function startGame(gameId) {
             // 로그인 상태라면 토큰을 들고 이동
             const accessToken = session.access_token;
             // 게임 폴더 구조가 /games/YGJ/index.html 인지 확인 필수!
-            window.location.href = `./games/${gameId}/index.html?token=${accessToken}`;
+            window.location.href = `https://shines1003.github.io/game/games/${gameId}/ygj.html?token=${accessToken}`;;
         }
     } catch (err) {
         console.error("인증 에러:", err.message);
