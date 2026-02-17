@@ -16,44 +16,58 @@ function updateAuthUI(session) {
     const displayId = document.getElementById('display-id');
 
     if (session) {
-        // 로그인 상태: 폼 숨기고 환영 영역 표시
         loginForm.classList.add('hidden');
         loggedInArea.classList.remove('hidden');
-        // 이메일에서 @ 앞부분만 추출해 ID처럼 표시
         displayId.innerText = session.user.email.split('@')[0];
     } else {
-        // 로그아웃 상태: 폼 표시하고 환영 영역 숨김
         loginForm.classList.remove('hidden');
         loggedInArea.classList.add('hidden');
     }
 }
 
-// 4. 회원가입 함수
+// 4. 회원가입 함수 (자동 로그인 기능 추가)
 async function handleSignUp() {
     const email = document.getElementById('userEmail').value;
     const password = document.getElementById('userPw').value;
-    const { error } = await supabaseClient.auth.signUp({ email, password });
+
+    if (!email || !password) {
+        alert("이메일과 비밀번호를 모두 입력해주세요.");
+        return;
+    }
+
+    // Supabase 회원가입 시도
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
     
-    if (error) alert("가입 실패: " + error.message);
-    else alert("가입 성공! 이제 로그인을 해주세요.");
+    if (error) {
+        alert("가입 실패: " + error.message);
+    } else {
+        // [핵심] 가입 성공 시 바로 로그인 함수를 호출하여 자동 입장
+        alert("회원가입 성공! 자동으로 로그인합니다.");
+        handleLogin(); 
+    }
 }
 
-// 5. 로그인 함수 (성공 시 UI만 바꿈)
+// 5. 로그인 함수
 async function handleLogin() {
     const email = document.getElementById('userEmail').value;
     const password = document.getElementById('userPw').value;
+
+    if (!email || !password) {
+        alert("이메일과 비밀번호를 입력해주세요.");
+        return;
+    }
 
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
         alert("로그인 실패: " + error.message);
     } else {
-        alert("로그인되었습니다!");
-        updateAuthUI(data.session); // 화면 전환
+        alert("반갑습니다!");
+        updateAuthUI(data.session);
     }
 }
 
-// 6. 게임 시작 함수 (PLAY NOW 클릭 시 실행)
+// 6. 게임 시작 함수
 async function startGame(gameId) {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
@@ -63,21 +77,20 @@ async function startGame(gameId) {
     }
 
     const accessToken = session.access_token;
-    // 실제 게임 페이지로 토큰을 들고 이동
     window.location.href = `https://shines1003.github.io/game/games/${gameId}/ygj.html?token=${accessToken}`;
 }
 
 // 7. 로그아웃 함수
 async function handleLogout() {
     await supabaseClient.auth.signOut();
-    location.reload(); // 깔끔하게 새로고침해서 로그인 폼으로 복구
+    location.reload();
 }
 
 // 슬라이드 컨트롤 로직
 const scrollContainer = document.getElementById('gameScroll');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
-if (nextBtn && prevBtn) {
+if (nextBtn && prevBtn && scrollContainer) {
     nextBtn.onclick = () => scrollContainer.scrollBy({ left: 310, behavior: 'smooth' });
     prevBtn.onclick = () => scrollContainer.scrollBy({ left: -310, behavior: 'smooth' });
 }
