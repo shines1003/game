@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 로그인 폼을 위한 추가 스타일 */
+        /* 로그인 폼 및 사용자 정보 전용 스타일 */
         .auth-section {
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
@@ -16,6 +16,7 @@
             max-width: 400px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
         .auth-input-group {
             display: flex;
@@ -47,6 +48,11 @@
         .auth-btn:hover { transform: scale(1.05); }
         .signup-btn { background: #4a4a4a; color: white; }
         .login-btn { background: #e67e22; color: white; }
+        
+        /* 로그인 후 사용자 표시 스타일 */
+        #user-info { color: white; font-size: 1.1rem; margin-bottom: 10px; }
+        #user-info span { color: #e67e22; font-weight: bold; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -62,14 +68,21 @@
             <p class="subtitle">2D 도트 어드벤처</p>
         </header>
 
-        <section class="auth-section">
-            <div class="auth-input-group">
-                <input type="email" id="userEmail" placeholder="이메일 주소">
-                <input type="password" id="userPw" placeholder="비밀번호">
+        <section class="auth-section" id="auth-area">
+            <div id="login-form">
+                <div class="auth-input-group">
+                    <input type="email" id="userEmail" placeholder="이메일 주소">
+                    <input type="password" id="userPw" placeholder="비밀번호">
+                </div>
+                <div class="auth-btn-group">
+                    <button class="auth-btn signup-btn" onclick="handleSignUp()">회원가입</button>
+                    <button class="auth-btn login-btn" onclick="handleLogin()">로그인</button>
+                </div>
             </div>
-            <div class="auth-btn-group">
-                <button class="auth-btn signup-btn" onclick="handleSignUp()">회원가입</button>
-                <button class="auth-btn login-btn" onclick="handleLogin()">로그인</button>
+
+            <div id="logged-in-area" class="hidden">
+                <div id="user-info">반갑습니다, <span id="display-id">사용자</span>님!</div>
+                <button class="auth-btn signup-btn" onclick="handleLogout()">로그아웃</button>
             </div>
         </section>
 
@@ -82,7 +95,7 @@
                     <div class="card-info">
                         <h3>YGJ: 삼국지</h3>
                         <p class="desc">전략 시뮬레이션 RPG</p>
-                        <button class="play-button" onclick="handleLogin()">PLAY NOW</button>
+                        <button class="play-button" onclick="startGame('YGJ')">PLAY NOW</button>
                     </div>
                 </div>
 
@@ -94,20 +107,3 @@
                         <button class="play-button" disabled>COMING SOON</button>
                     </div>
                 </div>
-                <div class="game-card upcoming">
-                    <div class="card-preview"></div>
-                    <div class="card-info">
-                        <h3>준비 중인 게임 2</h3>
-                        <p class="desc">Coming Soon...</p>
-                        <button class="play-button" disabled>COMING SOON</button>
-                    </div>
-                </div>
-            </div>
-
-            <button class="nav-btn right" id="nextBtn">&#10095;</button>
-        </div>
-    </main>
-
-    <script src="script.js"></script>
-</body>
-</html>
