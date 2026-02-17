@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 로그인 폼 및 사용자 정보 전용 스타일 */
         .auth-section {
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
@@ -48,11 +47,9 @@
         .auth-btn:hover { transform: scale(1.05); }
         .signup-btn { background: #4a4a4a; color: white; }
         .login-btn { background: #e67e22; color: white; }
-        
-        /* 로그인 후 사용자 표시 스타일 */
         #user-info { color: white; font-size: 1.1rem; margin-bottom: 10px; }
         #user-info span { color: #e67e22; font-weight: bold; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -88,7 +85,6 @@
 
         <div class="carousel-wrapper">
             <button class="nav-btn left" id="prevBtn">&#10094;</button>
-            
             <div class="game-selection" id="gameScroll">
                 <div class="game-card active">
                     <div class="card-preview ygj-theme"></div>
@@ -98,7 +94,6 @@
                         <button class="play-button" onclick="startGame('YGJ')">PLAY NOW</button>
                     </div>
                 </div>
-
                 <div class="game-card upcoming">
                     <div class="card-preview"></div>
                     <div class="card-info">
@@ -107,3 +102,11 @@
                         <button class="play-button" disabled>COMING SOON</button>
                     </div>
                 </div>
+            </div>
+            <button class="nav-btn right" id="nextBtn">&#10095;</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
