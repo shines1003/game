@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>삼국지 헌제전 - 게임 기획서(GDD) v4.0</title>
+<style>
+@page { size: A4 portrait; margin: 10mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-size: 8.5pt; line-height: 1.45; color: #1E293B; background: #F4F7FA; padding: 10mm;
+}
+@media print { body { background: #FFF; padding: 0; } .page-container { box-shadow: none; border: none; margin-bottom: 0; } }
+.page-container {
+  width: 100%; max-width: 190mm; margin: 0 auto 10mm auto; background: #FFF;
+  border: 1px solid #CBD5E1; border-radius: 6px; padding: 8mm; box-shadow: 0 4px 12px rgba(30,58,95,0.05);
+}
+.page-break { page-break-before: always; }
+.header-bar {
+  border-left: 4px solid #1E3A5F; background: #EBF3FA; padding: 8px 12px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center; page-break-inside: avoid;
+}
+.header-bar h1 { font-size: 13pt; color: #1E3A5F; margin: 0; }
+.header-bar .meta { font-size: 7.5pt; color: #64748B; text-align: right; line-height: 1.5; }
+.doc-title { text-align: center; margin-bottom: 5mm; }
+.doc-title .sub { font-size: 8pt; color: #64748B; }
+.doc-title h0 { display: block; font-size: 18pt; font-weight: 800; color: #1E3A5F; letter-spacing: -0.4px; margin-top: 2px; }
+h2 {
+  font-size: 9.5pt; color: #1E3A5F; border-bottom: 1.5px solid #CBD5E1; padding-bottom: 3px;
+  margin: 10px 0 6px 0; display: flex; align-items: center; gap: 6px; page-break-after: avoid;
+}
+h2::before { content:""; display:inline-block; width:4px; height:10px; background:#3B82F6; border-radius:1px; }
+h3 { font-size: 8.6pt; font-weight: 700; color: #1E3A5F; margin: 6px 0 3px 0; padding-left:6px; border-left: 3px solid #3B82F6; }
+.card { background: #FFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 6px 8px; margin-bottom: 6px; page-break-inside: avoid; }
+.card-title { font-size: 8.2pt; font-weight: 700; color: #1E3A5F; margin-bottom: 3px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 7.6pt; margin-bottom: 8px; page-break-inside: avoid; }
+th { background: #EBF3FA; color: #1E3A5F; font-weight: 600; border: 1px solid #CBD5E1; padding: 3.5px 5px; text-align: center; }
+td { border: 1px solid #CBD5E1; padding: 3.5px 5px; color: #334155; text-align:center; }
+td.left { text-align:left; }
+tr:nth-child(even) td { background:#FAFCFE; }
+.badge { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 7pt; font-weight: 600; background: #EBF3FA; color: #1E3A5F; border: 1px solid #BFDBFE; margin-right:3px; }
+.formula-box {
+  background:#1E3A5F; color:#EBF3FA; font-family:Consolas,"Courier New",monospace; font-size:7.4pt;
+  border-radius:4px; padding:7px 9px; margin-bottom:8px; line-height:1.6; page-break-inside: avoid; white-space:pre;
+}
+.formula-box .fname { color:#93C5FD; font-weight:700; margin-right:6px; }
+.note-box { background:#EBF3FA; border:1px dashed #3B82F6; border-radius:4px; padding:5px 8px; font-size:7.5pt; color:#1E3A5F; margin-bottom:8px; page-break-inside: avoid; }
+.quote { background:#FAFCFE; border-left:3px solid #3B82F6; padding:3px 7px; margin:3px 0; font-size:7.3pt; color:#334155; font-style:italic; }
+.quote b { font-style:normal; color:#1E3A5F; }
+.stage-card { border:1px solid #CBD5E1; border-radius:4px; padding:6px 8px; margin-bottom:6px; page-break-inside: avoid; background:#fff; }
+.stage-head { display:flex; justify-content:space-between; align-items:baseline; font-size:8pt; font-weight:700; color:#1E3A5F; margin-bottom:2px; }
+.stage-head .loc { font-size:6.8pt; font-weight:400; color:#64748B; }
+.stage-body { font-size:7.4pt; color:#334155; }
+ul.compact, ol.compact { margin:2px 0; padding-left:15px; }
+ul.compact li, ol.compact li { margin-bottom:2px; }
+.footer-mark { text-align:center; font-size:6.8pt; color:#94A3B8; margin-top:6px; }
+</style>
+</head>
+<body>
+
+<div class="page-container">
+  <div class="doc-title">
+    <span class="sub">CONFIDENTIAL GAME DESIGN DOCUMENT — v4.0</span>
+    <h0>삼국지 헌제전</h0>
+    <span class="sub">영걸전 외전: 유협전 · 2D 픽셀 턴제 그리드 SRPG</span>
+  </div>
+  <div class="header-bar">
+    <h1>GDD v4.0 — 병종 로스터·타일·스프라이트 스펙 갱신판</h1>
+    <div class="meta">엔진: Godot 4.x&nbsp;|&nbsp;4장 16스테이지 + EX 2종</div>
+  </div>
+
+  <h2>1. 프로젝트 개요 및 코어 루프</h2>
+  <div class="card">
+    <span class="badge">가제</span> 삼국지 헌제전 (영걸전 외전: 유협전) &nbsp;
+    <span class="badge">장르</span> 2D 픽셀 턴제 그리드 SRPG (Godot 4.x)
+    <p style="font-size:8pt; margin-top:5px;">8세 헌제 유협(한고조 유방 빙의)이 <b>적소검</b>을 각성, 동탁·이각곽사·조조의 감시를 거쳐
+    촉·오 연합을 이끌고 조조의 몸에 침식한 숙적 <b>패왕 항우의 원혼</b>과 최종 대립한다.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">4단계 게임 루프</div>
+    <table><tr><th>단계</th><th>내용</th></tr>
+      <tr><td>거점 정비</td><td class="left">인연 대화, 내정, 상점</td></tr>
+      <tr><td>출전 편성</td><td class="left">원소 장착(주술계 2종), 진형 구성</td></tr>
+      <tr><td>그리드 전투</td><td class="left">2D 턴제 전술 전투</td></tr>
+      <tr><td>시나리오 컷신</td><td class="left">분기·엔딩 반영</td></tr>
+    </table>
+  </div>
+
+  <h2>2. 수치 공식 및 기본 시스템</h2>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">3대 고유 능력치</div>
+      <table><tr><th>능력치</th><th>상한</th></tr><tr><td>무력</td><td>100(버프120)</td></tr><tr><td>지력</td><td>100(버프120)</td></tr><tr><td>근성</td><td>100(버프120)</td></tr></table>
+    </div>
+    <div class="card"><div class="card-title">전황 자원</div>
+      <table><tr><th>자원</th><th>기본값</th></tr><tr><td>체력(HP)</td><td>가변</td></tr><tr><td>투지</td><td>100</td></tr><tr><td>기력(SP)</td><td>가변</td></tr></table>
+    </div>
+  </div>
+  <div class="formula-box"><span class="fname">HP</span> = 기본HP + (Lv-1)x성장치 + floor(근성x(1.5+0.025x(Lv-1)))
+<span class="fname">SP</span> = floor((Lv+10)x지력/40)
+<span class="fname">공격력</span> = floor((Lv+10)x(병종공격보정+0.08x무력+0.03x투지+무기보정)x장비배율)
+<span class="fname">방어력</span> = floor((Lv+10)x(병종방어보정+0.07x근성+0.02x투지+방어구보정)x장비배율)
+<span class="fname">책략력</span> = floor((Lv+10)x(병종책략보정+0.08x지력+술구보정)x장비배율)
+<span class="fname">책략방어</span> = floor((Lv+10)x(병종저항보정+0.04x지력+0.03x근성)x방어구배율)</div>
+  <div class="formula-box"><span class="fname">물리피해</span> = max(1, floor(공격력x기술배율x상성배율x지형배율 - 방어력x0.7))
+<span class="fname">책략피해</span> = max(1, floor(책략력x기술배율x지형·날씨배율 - 책략방어x0.7))</div>
+  <div class="note-box">
+    상성: <b>보병→궁병→기병→보병</b> 유리(1.2배)/역상성 0.8배/<b>군주·도적·치유·주술 무상성(1.0배)</b>.
+    투지 0: 일반병 1턴 혼란 후 HP20%↓ 시 퇴각. 보스/네임드는 브레이크 적용(퇴각 없음, 종료 후 1턴 투지피해 50%감소),
+    턴당 투지감소 상한 15, 연속 적용 시 100%→70%→40% 감쇄.
+  </div>
+
+  <h2>3. 격자 타일 속성 및 환경 엔진</h2>
+  <table>
+    <tr><th>지형</th><th>이동력</th><th>방어</th><th>회피</th><th class="left">원소 반응 / 비고</th></tr>
+    <tr><td>평지</td><td>1</td><td>+0%</td><td>+0%</td><td class="left">기본 지형</td></tr>
+    <tr><td>수풀</td><td>2</td><td>+10%</td><td>+15%</td><td class="left">화계 피해 +25%</td></tr>
+    <tr><td>황무지/암벽</td><td>3</td><td>+20%</td><td>+10%</td><td class="left">궁병 사거리+1, 기병 이동력-1, 지계 고저차 +15%</td></tr>
+    <tr><td>진흙탕/여울</td><td>2</td><td>-10%</td><td>-15%</td><td class="left">수계 피해+25%(우천 시 추가), 기병 이동력 2배 소모</td></tr>
+    <tr><td>성내/석교</td><td>1</td><td>+15%</td><td>+5%</td><td class="left">폭 제한 구간, ZOC 형성 유리</td></tr>
+    <tr><td>성벽/망루</td><td>1(계단+1)</td><td>+25%</td><td>+5%</td><td class="left">고지대 궁병 사거리 +1</td></tr>
+  </table>
+  <div class="note-box">맨해튼 거리 기준. 야간전 시야 3칸 제한(횃불 인접시 확보). 우천: 화계 봉인/수계 위력 +25%. 폭염: 수계 봉인/화계 위력 +25%.</div>
+
+  <h2>4. 7대 병종 클래스 승급 체계 및 로스터</h2>
+  <table>
+    <tr><th style="width:12%">계열</th><th style="width:26%">승급 라인</th><th class="left">소속 캐릭터 (합류 시점)</th></tr>
+    <tr><td>군주계</td><td>군주→패주→패왕</td><td class="left">유협 (1-1 기본)</td></tr>
+    <tr><td>보병계</td><td>검병→중검병→중갑병</td><td class="left">연 (1-1 기본), 관은병 (3-3 합류, 딜탱형)</td></tr>
+    <tr><td>기병계</td><td>경기병→중기병→철기병</td><td class="left">마운록 (3-2 서량철기), 관우 (3-3), 장료 (4-1 친위대)</td></tr>
+    <tr><td>궁병계</td><td>궁수사→연노사→강노사</td><td class="left">화 (1-1 기본, 저격 노병), 손상향 (3-1 궁요희)</td></tr>
+    <tr><td>도적/권성계</td><td>도적→흉적→권성</td><td class="left">여령기 (1-4 자객), 서황 (3-2 권성)</td></tr>
+    <tr><td>치유계</td><td>의생→의관→명의</td><td class="left">왕원희 (2-2 의녀), 대교 (4-1 풍수사)</td></tr>
+    <tr><td>주술/무희계</td><td>서생→책사→군사</td><td class="left">린 (1-1 기본, 원소 군사), 초선 (1-3/1-4 무희), 소교 (4-1 궁악), 견희 (4-1 결계술사)</td></tr>
+  </table>
+
+  <div class="grid-2">
+    <div class="card"><div class="card-title">스킬 계보 — 회복기</div>
+      <ul class="compact">
+        <li>단일: 간호(8SP)→치유(14SP)→구명(22SP)</li>
+        <li>광역: 대원조(20SP)→대보급(30SP)→대구제(42SP, 반경3)</li>
+        <li>부활: 회생(50SP, 전투당 1회, 퇴각 장수 전용)</li>
+      </ul>
+    </div>
+    <div class="card"><div class="card-title">스킬 계보 — 오의</div>
+      <ul class="compact">
+        <li><b>패왕의 호통</b>: 유협 전용, 인접 적 즉시 전투이탈(호통 커맨드), HP 20%이하 네임드 대상</li>
+        <li><b>적소진룡참</b>: 유협 최종 각성기, 최종전 3페이즈 전용 광역 참격</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note-box">SP 지원 오라: 의관 이상 보유, 거리2 이내 최대2명에게 턴종료시 SP3 회복(중첩불가, 광역회복 사용턴엔 미발동). 주술계는 화·수·지 중 2원소만 장착.</div>
+
+  <!-- 제1장 -->
+  <div class="page-break"></div>
+  <h2>5. 제1장 · 각성과 도주 (낙양)</h2>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>1-1. 북망산 벼랑 — "이게 내 후손들이라고?"</span><span class="loc">189년 8월 · 북망산 (20×32)</span></div>
+    <div class="stage-body">십상시 장양에게 납치된 유변·유협. 유협이 유방의 기억을 각성, 연·화·린이 종대로 협곡을 돌파(ZOC 돌파,
+    소제 호위). 3턴째 적소검 발현(전군 버프). 장양에 인접해 [호통] 실행 시 투신 컷신. 이후 동탁이 위엄에 눌려
+    무릎 꿇고 낙양으로 호위(연행). 승리: 장양 격파 또는 호통 / 패배: 유협 퇴각·유변 사망. 20턴.
+    <div class="quote"><b>유협(유방):</b> "야, 내시 놈아! 그 칼 안 치워? 너 내가 누군지 알아?"</div>
+    <b>보상:</b> 기본 4인 파티(유협·연·화·린), '녹슨 적소검'.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>1-2. 온명원 복도 — "무신의 그림자"</span><span class="loc">낙양 온명원 (12×28)</span></div>
+    <div class="stage-body">[절대 도주] 무적 Lv.30 여포 회피 퍼즐. 여포와 2칸 이상 간격 유지, 전방 차단선을 신속 돌파.
+    승리: 서고 철문 도달 / 패배: 15턴 초과.
+    <div class="quote"><b>연(보병):</b> "전하, 먼저 들어가십시오!" / <b>유협:</b> "다음에 볼 땐 네 주인이 세 번은 바뀌어 있을 거다!"</div>
+    <b>보상:</b> 가죽 방패(연).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>1-3. 낙양 야간 성문 — "칠성검과 달빛의 맹세"</span><span class="loc">낙양 동문 대로 (28×18)</span></div>
+    <div class="stage-body">돌진하는 조조(NPC 기병) 엄호, 초선 게스트 합류. 야간 잠입(시야3칸+횃불). 관문에서
+    장료와 조우 — 인접 대화로 관문 개방 플래그 성립, 전투 없이 통과. 승리: 성문 돌파/장료 대화 / 패배: 조조 사망.
+    <div class="quote"><b>장료:</b> "이곳을 살아서 지나갈 수는 없다." / <b>유협:</b> "네가 서 있는 곳이 네 이정표가 될 것이다!"</div>
+    <b>보상:</b> '칠성보검', 장료 귀순 플래그 1단계(4-1에서 회수).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>1-4. 미오성 침소 — "탐욕의 종말"</span><span class="loc">192년 4월 · 미오성 (22×26)</span></div>
+    <div class="stage-body">초선의 독주로 동탁 [중독+능력치20%감소] 상태 시작. 여령기(자객) 잠입 협공으로 통로 개척.
+    5턴째 여포(우군, 통제불가)가 난입해 동탁만을 향해 돌진. 승리: 동탁 격파 / 패배: 유협·초선 퇴각.
+    <div class="quote"><b>유협:</b> "한고조 유방이 보냈다고 일러둬라." / <b>여령기:</b> "폐하의 곁에서 똑똑히 지켜보겠습니다."</div>
+    <b>보상:</b> 여령기 정식 영입(도적계), '만인장의 갑옷'. 이각·곽사 10만 대군의 장안 포위로 2장 연결.</div>
+  </div>
+
+  <!-- 제2장 -->
+  <div class="page-break"></div>
+  <h2>6. 제2장 · 굴욕과 인내 (장안과 허도)</h2>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>2-1. 장안성 뒷골목 — "썩은 쌀과 쥐고기"</span><span class="loc">195년 여름 · 장안 (24×28)</span></div>
+    <div class="stage-body">폐허 미로 지형, 창고 타일에서 [군량 주머니] 탈취. 북문에서 서황(중립보스)과 조우 —
+    유협 인접시 주먹밥 회유 이벤트로 전투 없이 즉시 통과. 승리: 북문 돌파/서황 대화 / 패배: 20턴 초과.
+    <div class="quote"><b>서황:</b> "누추한 군량이오나 요기하십시오." / <b>유협:</b> "눈물 나게 맛있는 밥이구나, 서공명."</div>
+    <b>보상:</b> '서황의 군량 주머니', 서황 아군화 플래그 1단계(3-2에서 회수).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>2-2. 황하 나루터 — "비정한 도강"</span><span class="loc">195년 11월 · 황하 (26×22)</span></div>
+    <div class="stage-body">뻘밭(진흙탕) 지형으로 기병 저지, 나룻배 내구도 방어(궁기병 화공), 왕원희(의녀) 참전.
+    매달리는 관리들의 밧줄을 끊는 비정한 승선 이벤트. 승리: 승선 후 도강 / 패배: 배 전소·왕원희 퇴각.
+    <div class="quote"><b>유협:</b> "짐이 살아야 종묘사직이 산다." / <b>왕원희:</b> "폐하의 대업 곁에서 다하겠습니다."</div>
+    <b>보상:</b> 왕원희 정식 영입(치유계), '황하의 닻줄'.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>2-3. 허전 수렵장 — "빼앗긴 활과 삼킨 분노"</span><span class="loc">199년 가을 · 허전 (28×22)</span></div>
+    <div class="stage-body">황금 사슴 저격 레이스. [관우 분노 게이지] 100% 도달 시 즉시 패배 — 유협 인접 커맨드로
+    관우 폭주 억제. 화(노병, 1차승급)의 장거리 저격 활용.
+    <div class="quote"><b>관우:</b> "저 역적 놈이 감히...!" / <b>유협:</b> "짐은 아직 저자가 차려주는 밥이 더 먹고 싶으니, 칼을 거두시오."</div>
+    <b>보상:</b> '명궁의 깍지', 관우 신뢰도 플래그(3-3에서 영입 조건).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>2-4. 채소밭 정원 — "천둥소리와 바보 연기"</span><span class="loc">199년 겨울 · 허도 유비 사저 (20×20)</span></div>
+    <div class="stage-body">논영웅(論英雄) 5회 문답으로 의심 수치 관리, 천둥 시 [수저/찻잔 떨구기]로 대폭 하락.
+    의심 낮은 구간에 유비 인접해 의대조 비밀 전달. 승리: 심문 통과+전달완료 / 패배: 의심 100.
+    <div class="quote"><b>조조:</b> "지금 천하의 영웅은 오직 경과 나(조조)뿐이오!" / <b>유협:</b> "아이고, 깜짝이야! 하늘이 노하셨나 보오!"</div>
+    <b>보상:</b> '낙뢰의 찻잔', 촉군 결사 동맹 체결.</div>
+  </div>
+
+  <!-- 제3장 -->
+  <div class="page-break"></div>
+  <h2>7. 제3장 · 적벽과 연합 (장강과 형주)</h2>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>3-1. 불타는 적벽 함대 — "화염의 연환선 탈출"</span><span class="loc">208년 겨울 · 적벽 함대 (28×18)</span></div>
+    <div class="stage-body">3턴마다 붕괴하는 함선 지형(화염 지속피해). 손상향(궁요희) 엄호 합류, 채모는 유협 인접
+    [설득]으로 즉시 퇴각. 승리: 동남단 나루터 도달 / 패배: 손상향 퇴각.
+    <div class="quote"><b>손상향:</b> "뱃길은 내가 뚫을 테니 망설이지 말고 이쪽으로 뛰세요!"</div>
+    <b>보상:</b> 손상향 정식 영입(궁병계), '조조군의 해전도'.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>3-2. 정군산 협곡 — "돌아온 대부와 서량의 은창"</span><span class="loc">219년 · 정군산 (22×28)</span></div>
+    <div class="stage-body">하후연 고지대 저격 엄폐 돌파. 동쪽 협곡 고립된 마운록 구출, 서황(2-1 플래그 회수)이
+    유협 인접시 즉시 아군 전환, 하후연과 일기토. 승리: 하후연 퇴각.
+    <div class="quote"><b>서황:</b> "신 서황, 오늘부터 폐하의 도끼가 되겠습니다!"</div>
+    <b>보상:</b> 서황(권성)·마운록(서량철기) 정식 영입, '관청대부'.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>3-3. 맥성 외곽 — "형주의 붉은 실과 두 지략가"</span><span class="loc">219년 겨울 · 맥성 (26×28)</span></div>
+    <div class="stage-body">부상 관우 구출 타임어택. 여몽·육손 유협 인접 [설득](사후명예/이릉대전 경고)으로
+    중립·우군 전환, 4턴째 위나라 조인 추격군 요격.
+    <div class="quote"><b>유협→여몽:</b> "제일 명장으로 종묘에 새겨주마!" / <b>유협→육손:</b> "조조만 웃게 만들 셈이냐?"</div>
+    <b>보상:</b> 관우 정식 영입, '청룡언월도', 관은병(보병계, 관우의 딸) 추가 합류.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>3-4. 백제성 연무장 — "천하 연합과 서열 정리"</span><span class="loc">220년 초 · 백제성 (24×24)</span></div>
+    <div class="stage-body">촉·오 맹장 4인(장비·황충·감녕·주태) 결투. HP 20% 이하에서 유협 인접시 [호통]으로 전투 이탈.
+    <div class="quote"><b>유협→장비:</b> "말구유 청소부터 시킬 테니 당장 무릎 꿇어라!" / <b>제갈량·육손:</b> "진정한 군왕의 기상이옵니다."</div>
+    <b>보상:</b> 전원 2차 승급(패주/중갑병/연노사/책사/권성 등), 견희(결계술사) 추가 합류.</div>
+  </div>
+
+  <!-- 제4장 -->
+  <div class="page-break"></div>
+  <h2>8. 제4장 · 초한 결전 (중원과 낙양)</h2>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>4-1. 허도 성문 돌파 — "투신의 결단과 강동의 두 꽃"</span><span class="loc">220년 봄 · 허도 (26×22)</span></div>
+    <div class="stage-body">대교(풍수사)·소교(궁악) 지원 합류, 조인·허저 돌파. 1-3 플래그 회수로 장료 즉시 귀순.
+    견희(결계술사)가 정궁 결계도를 바치며 합류.
+    <div class="quote"><b>장료:</b> "장문원, 한실의 천자 유협을 주군으로 모시겠나이다!"</div>
+    <b>보상:</b> 장료·대교·소교·견희 정식 영입, '청룡구도', '정궁의 결계도'.</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>4-2. 낙양 외곽 호로관 — "재현과 최종 방어선"</span><span class="loc">220년 초여름 · 호로관 (28×24)</span></div>
+    <div class="stage-body">사마의 주술 안개 정화, 성벽 연노병 제압, 린의 [금책]으로 사마의 무력화. 승리: 사마의 격파 및 성문 함락.
+    <div class="quote"><b>사마의:</b> "승상께서는 이미 400년의 봉인을 완전히 푸셨다..."</div>
+    <b>보상:</b> '백우선'(린 전용).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>4-3. 낙양 대화전 — "불타는 정궁과 흑염의 조조"</span><span class="loc">220년 한여름 밤 · 대화전 (22×28)</span></div>
+    <div class="stage-body">석조 기둥으로 적 기병 차단, 조조 인접 8방향 흑염 배리어 파쇄(선딜링계 우선 저격). 격파 직후
+    시공 결계(해하)가 열려 4-4로 강제 연결.
+    <div class="quote"><b>조조(침식):</b> "낙양을 통째로 불태워 해하의 제단으로 삼으리라!"</div>
+    <b>보상:</b> '의천검', 천녀의 비단(부활 아이템).</div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-head"><span>4-4. 해하 변이 결계 — "초한 종말과 붉은 용의 비상" (최종전)</span><span class="loc">해하 시공 결계 (26×30)</span></div>
+    <div class="stage-body">최종보스 패왕 항우(HP5000) 3페이즈 공략. 사면초가 주술석 점령([초가] 기믹으로 적 약화+항우
+    행동 제한), 조조(의식불명, 중립) 구출 시 보너스 목표 달성.
+    <div class="quote"><b>패왕 항우:</b> "오늘 내 창끝에 부스러기가 되리라!" / <b>유협:</b> "네놈의 시대는 400년 전에 이미 끝났다!"</div>
+    <b>보상:</b> '진 적소검'(최종형태), 2회차 모드 해금.</div>
+  </div>
+
+  <h2>9. EX 챌린지 스테이지</h2>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">EX-1. 무신의 귀환 (여포전)</div>
+      <p style="font-size:7.4pt;">낙양 연무장 가상전. 여포(Lv45 무적형)와 순수 무력 맞대결, 증원 없이 파티 5인으로 격파.
+      <b>보상:</b> '방천화극', 전용 탈것 '적토마'.</p>
+    </div>
+    <div class="card"><div class="card-title">EX-2. 홍문연의 악몽 (항우 환영전)</div>
+      <p style="font-size:7.4pt;">400년 전 홍문연 재현. 무기 미착용 시작, 범증의 자객 회피 및 항우 환영 격퇴.
+      <b>보상:</b> 히든 타이틀 '한고조의 재림', 코스튬 '초한 패왕복'.</p>
+    </div>
+  </div>
+
+  <!-- 비주얼/데이터 -->
+  <div class="page-break"></div>
+  <h2>10. 스프라이트 사양 및 기술 데이터 스키마</h2>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">스프라이트 규격</div>
+      <table><tr><th>항목</th><th>스펙</th></tr>
+        <tr><td>타일</td><td>48×48 px</td></tr>
+        <tr><td>캐릭터</td><td>48×64 px</td></tr>
+        <tr><td>방향</td><td>4방향</td></tr>
+      </table>
+    </div>
+    <div class="card"><div class="card-title">6대 FSM 애니메이션 스테이트</div>
+      <ul class="compact"><li>Idle / Move / Attack / Spell / Hit / Defeat</li></ul>
+    </div>
+  </div>
+
+  <h3>Godot 4.x — Unit 스키마</h3>
+  <div class="formula-box">extends Resource
+class_name UnitData
+
+@export var unit_id: String
+@export var display_name: String
+@export var class_line: String   # "군주|보병|기병|궁병|도적|치유|주술"
+@export var class_stage: int = 1
+@export var level: int = 1
+@export var str_stat: int
+@export var int_stat: int
+@export var vit_stat: int
+@export var hp: int
+@export var sp: int
+@export var morale: int = 100
+@export var elements: Array[String] = []   # 주술계 최대 2개
+@export var skill_ids: Array[String] = []
+@export var sprite_frames: SpriteFrames     # 24x32, 4방향x6 FSM</div>
+
+  <h3>Godot 4.x — Skill 스키마</h3>
+  <div class="formula-box">extends Resource
+class_name SkillData
+
+@export var skill_id: String
+@export var display_name: String
+@export var unlock_level: int
+@export var category: String   # "physical|tactic|heal|buff|debuff"
+@export var range_min: int
+@export var range_max: int
+@export var aoe_shape: String  # "single|line|circle_r1|circle_r2"
+@export var sp_cost: int
+@export var power_multiplier: float = 1.0
+@export var element: String = "none"  # "fire|water|earth"
+@export var special_effects: Array[String] = []</div>
+
+  <h3>Godot 4.x — Tile 스키마</h3>
+  <div class="formula-box">extends Resource
+class_name TileData
+
+@export var tile_id: String
+@export var terrain_type: String  # "plain|grass|wasteland|mud|castle|wall"
+@export var move_cost: int = 1
+@export var defense_bonus: float = 0.0
+@export var evasion_bonus: float = 0.0
+@export var element_reaction: String = "none"  # "fire|water|earth"
+@export var element_bonus_pct: float = 0.0
+@export var vision_blocking: bool = false
+@export var tile_size: Vector2i = Vector2i(24, 24)</div>
+
+  <!-- 등장인물 -->
+  <div class="page-break"></div>
+  <h2>11. 등장인물 로스터 (전체 합류 순서)</h2>
+  <table>
+    <tr><th style="width:10%">스테이지</th><th style="width:16%">이름</th><th style="width:16%">병종</th><th class="left">비고</th></tr>
+    <tr><td>1-1</td><td>유협/연/화/린</td><td>군주/보병/궁병/주술</td><td class="left">기본 4인 파티</td></tr>
+    <tr><td>1-3</td><td>초선(게스트)</td><td>무희</td><td class="left">디버퍼, 매혹/잠입</td></tr>
+    <tr><td>1-4</td><td>여령기</td><td>도적</td><td class="left">여포의 딸, 자객</td></tr>
+    <tr><td>2-2</td><td>왕원희</td><td>치유(의녀)</td><td class="left">단일회복/해독</td></tr>
+    <tr><td>3-1</td><td>손상향</td><td>궁병(궁요희)</td><td class="left">고기동 강습형</td></tr>
+    <tr><td>3-2</td><td>서황/마운록</td><td>권성/기병(서량철기)</td><td class="left">2-1 플래그 회수 영입</td></tr>
+    <tr><td>3-3</td><td>관우/관은병</td><td>기병/보병</td><td class="left">관은병은 관우의 딸</td></tr>
+    <tr><td>3-4</td><td>견희</td><td>주술(결계술사)</td><td class="left">패왕 결계 정보원</td></tr>
+    <tr><td>4-1</td><td>장료/대교/소교</td><td>기병/치유/주술(궁악)</td><td class="left">1-3 플래그 회수</td></tr>
+  </table>
+  <div class="note-box">악역/조력 NPC: 장양, 동탁, 여포(보스→우군), 이각·곽사, 조조(피침식 최종보스, 이후 사면), 사마의, 하후연, 채모, 여몽·육손(설득으로 우호 전환), 장비·황충·감녕·주태(3-4 결투).</div>
+
+  <div class="footer-mark">삼국지 헌제전 GDD v4.0 — 병종 로스터·타일·스프라이트 스펙 갱신판</div>
+</div>
+</body>
+</html>
