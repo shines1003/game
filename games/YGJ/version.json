@@ -1,7 +1,7 @@
 {
-  "game_commit": "fe79f13deca22c3522f64c8c20a1cd6f5006270a",
+  "game_commit": "d2ec54ec857aff63352e00b5ccec5122184dfc0b",
   "gdd_version": "v60.0",
-  "built_at": "2026-11-09T04:28:38+09:00",
+  "built_at": "2026-11-09T04:48:05+09:00",
   "stage": "D1~D4·W3",
   "files": {
     "ygj.apple-touch-icon.png": 11929,
@@ -10,7 +10,7 @@
     "ygj.html": 5422,
     "ygj.icon.png": 5769,
     "ygj.js": 315759,
-    "ygj.pck": 33283940,
+    "ygj.pck": 33283972,
     "ygj.png": 21443,
     "ygj.wasm": 37686550,
     "ygj_bgm.pck": 49314800,
