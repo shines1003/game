@@ -1,8 +1,8 @@
 {
-  "game_commit": "a53808b0d2410e2903f089a23b7df9a79e6cbf28",
+  "game_commit": "8c73baec54649dd09907e61395d05494067ef057",
   "gdd_version": "v60.0",
-  "built_at": "2026-11-09T10:03:59+09:00",
-  "stage": "⑧-2",
+  "built_at": "2026-11-09T10:15:19+09:00",
+  "stage": "기타",
   "files": {
     "ygj.apple-touch-icon.png": 11929,
     "ygj.audio.position.worklet.js": 2973,
@@ -10,22 +10,22 @@
     "ygj.html": 5422,
     "ygj.icon.png": 5769,
     "ygj.js": 315759,
-    "ygj.pck": 33325344,
+    "ygj.pck": 33329888,
     "ygj.png": 21443,
     "ygj.wasm": 37686550,
-    "ygj_bgm.pck": 49315920,
-    "ygj_bond.pck": 30073804
+    "ygj_bgm.pck": 49316016,
+    "ygj_bond.pck": 30073900
   },
   "packs": {
     "ygj_bgm.pck": {
       "name": "bgm",
-      "bytes": 49315920,
-      "sha256": "27539a9026e9c42fa8370503e55de3b3c5123f910eaae58a11c507a68fcca513"
+      "bytes": 49316016,
+      "sha256": "b4d4fec70b058f38c32216387e439f7d82d2fe0063eb20acbf23bedcaa7e7311"
     },
     "ygj_bond.pck": {
       "name": "bond",
-      "bytes": 30073804,
-      "sha256": "39c2bcc3d48e69e36bc9c6f9ae5d63c0136b8537615868247dee57d98a09b428"
+      "bytes": 30073900,
+      "sha256": "2381a826019e679ad7176198deb1d4aee4e4e2ae9e3cfbeac9d29272d8fb19b0"
     }
   }
 }
