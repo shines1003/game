@@ -1,8 +1,8 @@
 {
   "game_commit": "8c73baec54649dd09907e61395d05494067ef057",
   "gdd_version": "v60.0",
-  "built_at": "2026-11-09T10:15:19+09:00",
-  "stage": "기타",
+  "built_at": "2026-11-09T10:21:50+09:00",
+  "stage": "v60 통합(D5·⑧-1~⑧-4·기타)",
   "files": {
     "ygj.apple-touch-icon.png": 11929,
     "ygj.audio.position.worklet.js": 2973,
@@ -20,12 +20,12 @@
     "ygj_bgm.pck": {
       "name": "bgm",
       "bytes": 49316016,
-      "sha256": "b4d4fec70b058f38c32216387e439f7d82d2fe0063eb20acbf23bedcaa7e7311"
+      "sha256": "6d13102df835bebd9c515cb41a9baa99876428ac09788778b073eb61f98f71e2"
     },
     "ygj_bond.pck": {
       "name": "bond",
       "bytes": 30073900,
-      "sha256": "2381a826019e679ad7176198deb1d4aee4e4e2ae9e3cfbeac9d29272d8fb19b0"
+      "sha256": "89688e0b5e6a1c46b91371885d82caa539c7c633c8a9a280f5c136f126a2c9b4"
     }
   }
 }
